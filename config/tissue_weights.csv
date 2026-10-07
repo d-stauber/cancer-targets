@@ -1,0 +1,6 @@
+pattern,group,weight
+testis|placenta|cells_cultured|cells_ebv|cell line|^n/a$|^tissue$,exempt,0
+heart|brain|cerebell|cortex|hippocamp|hypothalam|caudate|basal_ganglia|amygdala|substantia|accumbens|putamen|spinal|choroid|raphe|midbrain|^lung|bronchus|liver|hepatocyte|portal_tract|kidney|whole_blood|^blood$|bone marrow|white blood cell|retina,vital,1.0
+pancreas|small_intestine|small intestine|duodenum|colon|rectum|appendix|adrenal|pituitary|nerve|parathyroid|gallbladder|bile duct|lymph node|lymphatic|thymus|^eye$,important,0.8
+esophagus|stomach|muscle|adipose|thyroid|artery|blood vessel|spleen|skin|oral mucosa|nasopharynx|tongue|tonsil|cartilage|soft tissue,moderate,0.6
+breast|bladder|prostate|ovary|uterus|endometrium|vagina|cervix|fallopian|salivary|seminal|epididymis|efferent|hair|sole of foot|paraganglia|lining of body cavities,dispensable,0.4

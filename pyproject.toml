@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cancer_targets"
+version = "0.1.0"
+description = "At-scale cancer target discovery pipeline and web app"
+requires-python = ">=3.11"
+dependencies = []
+
+[project.scripts]
+ct = "cancer_targets.cli:app"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

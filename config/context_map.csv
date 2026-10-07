@@ -1,0 +1,87 @@
+level,key,tcga_keys,gtex_v10_tissue,gtex_toil_site,hpa_normal_tissue,hpa_cancer,disease_names
+lineage,Breast,Breast Invasive Carcinoma,Breast_Mammary_Tissue,Breast,Breast,breast cancer,breast carcinoma|breast cancer
+lineage,Lung,Lung Adenocarcinoma|Lung Squamous Cell Carcinoma,Lung,Lung,Lung,lung cancer,lung carcinoma|lung cancer
+primary_disease,Non-Small Cell Lung Cancer,Lung Adenocarcinoma|Lung Squamous Cell Carcinoma,Lung,Lung,Lung,lung cancer,non-small cell lung carcinoma
+primary_disease,Lung Neuroendocrine Tumor,,Lung,Lung,Lung,lung cancer,small cell lung carcinoma
+lineage,Bowel,Colon Adenocarcinoma|Rectum Adenocarcinoma,Colon_Transverse,Colon,Colon,colorectal cancer,colorectal carcinoma|colorectal cancer
+lineage,Bladder/Urinary Tract,Bladder Urothelial Carcinoma,Bladder,Bladder,Urinary bladder,urothelial cancer,bladder carcinoma|urinary bladder cancer
+lineage,Ovary/Fallopian Tube,Ovarian Serous Cystadenocarcinoma,Ovary,Ovary,Ovary,ovarian cancer,ovarian carcinoma|ovarian cancer
+lineage,Liver,Liver Hepatocellular Carcinoma,Liver,Liver,Liver,liver cancer,hepatocellular carcinoma|liver cancer
+lineage,Esophagus/Stomach,Stomach Adenocarcinoma|Esophageal Carcinoma,Stomach,Stomach,Stomach,stomach cancer,stomach cancer|gastric carcinoma
+primary_disease,Esophagogastric Adenocarcinoma,Stomach Adenocarcinoma|Esophageal Carcinoma,Stomach,Stomach,Stomach,stomach cancer,stomach cancer|gastric carcinoma|esophageal carcinoma
+primary_disease,Esophageal Squamous Cell Carcinoma,Esophageal Carcinoma,Esophagus_Mucosa,Esophagus,Esophagus,,esophageal squamous cell carcinoma|esophageal carcinoma
+lineage,Pleura,Mesothelioma,Lung,Lung,Lung,,mesothelioma
+lineage,Myeloid,Acute Myeloid Leukemia,Whole_Blood,Blood,Bone marrow,,acute myeloid leukemia|leukemia
+primary_disease,Acute Myeloid Leukemia,Acute Myeloid Leukemia,Whole_Blood,Blood,Bone marrow,,acute myeloid leukemia
+lineage,Lymphoid,Diffuse Large B-Cell Lymphoma|Acute Lymphoblastic Leukemia,Whole_Blood,Blood,Lymph node,lymphoma,lymphoma|lymphoid leukemia
+primary_disease,B-Lymphoblastic Leukemia/Lymphoma,Acute Lymphoblastic Leukemia,Whole_Blood,Blood,Bone marrow,,B-cell acute lymphoblastic leukemia|acute lymphoblastic leukemia
+primary_disease,T-Lymphoblastic Leukemia/Lymphoma,Acute Lymphoblastic Leukemia,Whole_Blood,Blood,Bone marrow,,T-cell acute lymphoblastic leukemia|acute lymphoblastic leukemia
+primary_disease,Mature B-Cell Neoplasms,Diffuse Large B-Cell Lymphoma,Whole_Blood,Blood,Lymph node,lymphoma,B-cell lymphoma|lymphoma|multiple myeloma
+primary_disease,Mature T and NK Neoplasms,,Whole_Blood,Blood,Lymph node,lymphoma,T-cell lymphoma|lymphoma
+primary_disease,Hodgkin Lymphoma,,Whole_Blood,Blood,Lymph node,lymphoma,Hodgkins lymphoma|lymphoma
+primary_disease,Non-Hodgkin Lymphoma,Diffuse Large B-Cell Lymphoma,Whole_Blood,Blood,Lymph node,lymphoma,non-Hodgkins lymphoma|lymphoma
+lineage,Pancreas,Pancreatic Adenocarcinoma,Pancreas,Pancreas,Pancreas,pancreatic cancer,pancreatic carcinoma|pancreatic cancer
+lineage,Skin,Skin Cutaneous Melanoma,Skin_Sun_Exposed_Lower_leg,Skin,Skin,melanoma,melanoma|cutaneous melanoma
+primary_disease,Melanoma,Skin Cutaneous Melanoma,Skin_Sun_Exposed_Lower_leg,Skin,Skin,melanoma,melanoma|cutaneous melanoma
+primary_disease,Cutaneous Squamous Cell Carcinoma,,Skin_Sun_Exposed_Lower_leg,Skin,Skin,skin cancer,cutaneous squamous cell carcinoma|skin carcinoma
+primary_disease,Merkel Cell Carcinoma,,Skin_Sun_Exposed_Lower_leg,Skin,Skin,skin cancer,Merkel cell carcinoma
+lineage,Kidney,Kidney Clear Cell Carcinoma|Kidney Papillary Cell Carcinoma|Kidney Chromophobe,Kidney_Cortex,Kidney,Kidney,renal cancer,renal cell carcinoma|kidney cancer
+primary_disease,Renal Cell Carcinoma,Kidney Clear Cell Carcinoma|Kidney Papillary Cell Carcinoma|Kidney Chromophobe,Kidney_Cortex,Kidney,Kidney,renal cancer,renal cell carcinoma
+lineage,CNS/Brain,Glioblastoma Multiforme|Brain Lower Grade Glioma,Brain_Cortex,Brain,Cerebral cortex,glioma,glioma|brain cancer
+primary_disease,Diffuse Glioma,Glioblastoma Multiforme|Brain Lower Grade Glioma,Brain_Cortex,Brain,Cerebral cortex,glioma,glioma|glioblastoma
+primary_disease,Embryonal Tumor,,Brain_Cerebellum,Brain,Cerebellum,glioma,medulloblastoma|embryonal tumor
+lineage,Prostate,Prostate Adenocarcinoma,Prostate,Prostate,Prostate,prostate cancer,prostate carcinoma|prostate cancer
+lineage,Head and Neck,Head & Neck Squamous Cell Carcinoma,Minor_Salivary_Gland,Salivary Gland,Oral mucosa,head and neck cancer,head and neck squamous cell carcinoma|head and neck cancer
+lineage,Uterus,Uterine Corpus Endometrioid Carcinoma|Uterine Carcinosarcoma,Uterus,Uterus,Endometrium,endometrial cancer,endometrial carcinoma|endometrial cancer|uterine cancer
+lineage,Cervix,Cervical & Endocervical Cancer,Cervix_Ectocervix,Cervix Uteri,Cervix,cervical cancer,cervical carcinoma|cervical cancer
+lineage,Thyroid,Thyroid Carcinoma,Thyroid,Thyroid,Thyroid gland,thyroid cancer,thyroid carcinoma|thyroid cancer
+lineage,Bone,Sarcoma,Cells_Cultured_fibroblasts,,Soft tissue,,bone sarcoma|sarcoma|osteosarcoma
+primary_disease,Ewing Sarcoma,Sarcoma,Cells_Cultured_fibroblasts,,Soft tissue,,Ewing sarcoma
+primary_disease,Osteosarcoma,Sarcoma,Cells_Cultured_fibroblasts,,Soft tissue,,osteosarcoma
+lineage,Soft Tissue,Sarcoma,Cells_Cultured_fibroblasts,,Soft tissue,,soft tissue sarcoma|sarcoma
+primary_disease,Rhabdomyosarcoma,Sarcoma,Muscle_Skeletal,Muscle,Skeletal muscle,,rhabdomyosarcoma
+lineage,Biliary Tract,Cholangiocarcinoma,Liver,Liver,Gallbladder,liver cancer,cholangiocarcinoma|biliary tract cancer
+lineage,Eye,Uveal Melanoma,,,Retina,melanoma,uveal melanoma
+lineage,Peripheral Nervous System,Neuroblastoma,Nerve_Tibial,Nerve,Adrenal gland,,neuroblastoma
+primary_disease,Neuroblastoma,Neuroblastoma,Nerve_Tibial,Nerve,Adrenal gland,,neuroblastoma
+lineage,Testis,Testicular Germ Cell Tumor,Testis,Testis,Testis,testis cancer,testicular germ cell tumor|testicular cancer
+lineage,Adrenal Gland,Adrenocortical Cancer,Adrenal_Gland,Adrenal Gland,Adrenal gland,,adrenocortical carcinoma
+lineage,Vulva/Vagina,,Vagina,Vagina,Vagina,,vulvar cancer|vaginal cancer
+lineage,Ampulla of Vater,,Small_Intestine_Terminal_Ileum,Small Intestine,Duodenum,,ampulla of Vater carcinoma|ampullary carcinoma
+lineage,Muscle,Sarcoma,Muscle_Skeletal,Muscle,Skeletal muscle,,sarcoma
+tcga,Breast Invasive Carcinoma,,Breast_Mammary_Tissue,Breast,Breast,breast cancer,breast carcinoma|breast cancer
+tcga,Lung Adenocarcinoma,,Lung,Lung,Lung,lung cancer,lung adenocarcinoma|non-small cell lung carcinoma
+tcga,Lung Squamous Cell Carcinoma,,Lung,Lung,Lung,lung cancer,squamous cell lung carcinoma|non-small cell lung carcinoma
+tcga,Colon Adenocarcinoma,,Colon_Transverse,Colon,Colon,colorectal cancer,colon adenocarcinoma|colorectal carcinoma
+tcga,Rectum Adenocarcinoma,,Colon_Sigmoid,Colon,Rectum,colorectal cancer,rectum adenocarcinoma|colorectal carcinoma
+tcga,Bladder Urothelial Carcinoma,,Bladder,Bladder,Urinary bladder,urothelial cancer,bladder carcinoma|urinary bladder cancer
+tcga,Ovarian Serous Cystadenocarcinoma,,Ovary,Ovary,Ovary,ovarian cancer,ovarian serous carcinoma|ovarian carcinoma
+tcga,Liver Hepatocellular Carcinoma,,Liver,Liver,Liver,liver cancer,hepatocellular carcinoma
+tcga,Stomach Adenocarcinoma,,Stomach,Stomach,Stomach,stomach cancer,stomach adenocarcinoma|stomach cancer|gastric carcinoma
+tcga,Esophageal Carcinoma,,Esophagus_Mucosa,Esophagus,Esophagus,,esophageal carcinoma
+tcga,Mesothelioma,,Lung,Lung,Lung,,mesothelioma
+tcga,Acute Myeloid Leukemia,,Whole_Blood,Blood,Bone marrow,,acute myeloid leukemia
+tcga,Acute Lymphoblastic Leukemia,,Whole_Blood,Blood,Bone marrow,,acute lymphoblastic leukemia
+tcga,Diffuse Large B-Cell Lymphoma,,Whole_Blood,Blood,Lymph node,lymphoma,diffuse large B-cell lymphoma|B-cell lymphoma
+tcga,Pancreatic Adenocarcinoma,,Pancreas,Pancreas,Pancreas,pancreatic cancer,pancreatic adenocarcinoma|pancreatic carcinoma
+tcga,Skin Cutaneous Melanoma,,Skin_Sun_Exposed_Lower_leg,Skin,Skin,melanoma,cutaneous melanoma|melanoma
+tcga,Kidney Clear Cell Carcinoma,,Kidney_Cortex,Kidney,Kidney,renal cancer,clear cell renal carcinoma|renal cell carcinoma
+tcga,Kidney Papillary Cell Carcinoma,,Kidney_Cortex,Kidney,Kidney,renal cancer,papillary renal cell carcinoma|renal cell carcinoma
+tcga,Kidney Chromophobe,,Kidney_Cortex,Kidney,Kidney,renal cancer,chromophobe renal cell carcinoma|renal cell carcinoma
+tcga,Glioblastoma Multiforme,,Brain_Cortex,Brain,Cerebral cortex,glioma,glioblastoma multiforme|glioblastoma
+tcga,Brain Lower Grade Glioma,,Brain_Cortex,Brain,Cerebral cortex,glioma,low grade glioma|glioma
+tcga,Prostate Adenocarcinoma,,Prostate,Prostate,Prostate,prostate cancer,prostate adenocarcinoma|prostate carcinoma
+tcga,Head & Neck Squamous Cell Carcinoma,,Minor_Salivary_Gland,Salivary Gland,Oral mucosa,head and neck cancer,head and neck squamous cell carcinoma
+tcga,Uterine Corpus Endometrioid Carcinoma,,Uterus,Uterus,Endometrium,endometrial cancer,endometrial carcinoma|endometrial cancer
+tcga,Uterine Carcinosarcoma,,Uterus,Uterus,Endometrium,endometrial cancer,uterine carcinosarcoma|endometrial cancer
+tcga,Cervical & Endocervical Cancer,,Cervix_Ectocervix,Cervix Uteri,Cervix,cervical cancer,cervical carcinoma|cervical cancer
+tcga,Thyroid Carcinoma,,Thyroid,Thyroid,Thyroid gland,thyroid cancer,thyroid carcinoma
+tcga,Sarcoma,,Cells_Cultured_fibroblasts,,Soft tissue,,sarcoma
+tcga,Cholangiocarcinoma,,Liver,Liver,Gallbladder,liver cancer,cholangiocarcinoma
+tcga,Uveal Melanoma,,,,Retina,melanoma,uveal melanoma
+tcga,Neuroblastoma,,Nerve_Tibial,Nerve,Adrenal gland,,neuroblastoma
+tcga,Wilms Tumor,,Kidney_Cortex,Kidney,Kidney,renal cancer,Wilms tumor|nephroblastoma
+tcga,Testicular Germ Cell Tumor,,Testis,Testis,Testis,testis cancer,testicular germ cell tumor
+tcga,Adrenocortical Cancer,,Adrenal_Gland,Adrenal Gland,Adrenal gland,,adrenocortical carcinoma
+tcga,Pheochromocytoma & Paraganglioma,,Adrenal_Gland,Adrenal Gland,Adrenal gland,,pheochromocytoma|paraganglioma
+tcga,Thymoma,,,,Thymus,,thymoma

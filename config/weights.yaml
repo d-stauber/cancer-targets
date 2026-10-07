@@ -1,0 +1,24 @@
+# Scoring configuration. Components are in [0,1]; NULL components are dropped and weights renormalized.
+thresholds:
+  expr_floor: 1.0        # log2(TPM+1) below which E = 0 and the gene is gated out
+  expr_ceiling: 6.0      # log2(TPM+1) at which E = 1
+  expressed_cutoff: 2.0  # prevalence: member counts as expressing if x >= this
+  selectivity_scale: 4.0 # log2 fold-change giving S = 1
+  vital_forgiveness: 2.0 # non-vital tissues are forgiven (1-w)*this log2 units in the normal reference
+  vital_gate_level: 5.7  # ~50 TPM in a vital tissue ...
+  vital_gate_margin: -2.0 # ... and tumor more than 4x BELOW it -> gated out (extreme on-target/off-tumor risk)
+  selectivity_multiplier_floor: 0.25 # composite is multiplied by floor + (1-floor)*S so unselective genes cannot rank on expression alone
+  surface_min: 0.6       # surface profile requires U >= this
+profiles:
+  any_modality: {E: 0.30, S: 0.30, P: 0.10, T: 0.10, U: 0.00, R: 0.15, A: 0.05, D: 0.00}
+  surface:      {E: 0.25, S: 0.25, P: 0.10, T: 0.10, U: 0.15, R: 0.10, A: 0.05, D: 0.00}
+selectivity_parts: {gtex: 0.5, match: 0.25, hpa: 0.25}
+component_descriptions:
+  E: "Expression level in this context (log2 TPM+1 scaled 1->0, 6->1)"
+  S: "Selectivity vs normal: vital-weighted GTEx reference, matched normal, and HPA normal IHC"
+  P: "Prevalence: fraction of member samples/lines expressing the gene (aggregate contexts)"
+  T: "Tumor protein evidence: HPA cancer IHC and/or CCLE proteomics"
+  U: "Surface accessibility: surfaceome, UniProt topology, HPA/OT membrane annotations"
+  R: "Tractability & precedent: Open Targets antibody/small-molecule buckets, known drugs, clinical stage"
+  A: "Open Targets disease association score for the context's cancer"
+  D: "CRISPR dependency (Chronos); display only by default"

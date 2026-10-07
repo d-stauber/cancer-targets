@@ -1,0 +1,61 @@
+# Data sources. URLs verified 2026-09-30. Each entry: files -> {name, url, optional regex}.
+# `dir` is the folder under data/raw/.
+depmap:
+  dir: depmap
+  release_title_patterns: ["DepMap {q} Public", "DepMap Public {q}"]
+  # candidate quarters tried newest-first for figshare discovery
+  quarters: ["26Q3", "26Q2", "26Q1", "25Q4", "25Q3", "25Q2", "25Q1", "24Q4"]
+  portal_files_api: "https://depmap.org/portal/api/download/files"
+  files:
+    - {name: Model.csv, regex: "^Model\\.csv$"}
+    - {name: OmicsExpressionProteinCodingGenesTPMLogp1.csv, regex: "^OmicsExpressionProteinCodingGenesTPMLogp1.*\\.csv$"}
+    - {name: CRISPRGeneEffect.csv, regex: "^CRISPRGeneEffect\\.csv$"}
+    - {name: CRISPRInferredCommonEssentials.csv, regex: "^CRISPRInferredCommonEssentials\\.csv$"}
+    - {name: OmicsProfiles.csv, regex: "^OmicsProfiles\\.csv$"}
+gtex:
+  dir: gtex
+  release: v10
+  files:
+    - {name: GTEx_Analysis_v10_RNASeQCv2.4.2_gene_median_tpm.gct.gz,
+       url: "https://storage.googleapis.com/adult-gtex/bulk-gex/v10/rna-seq/GTEx_Analysis_v10_RNASeQCv2.4.2_gene_median_tpm.gct.gz"}
+xena:
+  dir: xena
+  release: toil-recompute
+  files:
+    - {name: TcgaTargetGtex_rsem_gene_tpm.gz, url: "https://toil.xenahubs.net/download/TcgaTargetGtex_rsem_gene_tpm.gz"}
+    - {name: TcgaTargetGTEX_phenotype.txt.gz, url: "https://toil.xenahubs.net/download/TcgaTargetGTEX_phenotype.txt.gz"}
+    - {name: gencode.v23.annotation.gene.probemap, url: "https://toil.xenahubs.net/download/probeMap/gencode.v23.annotation.gene.probemap"}
+hpa:
+  dir: hpa
+  download_page: "https://www.proteinatlas.org/about/download"
+  files:
+    - {name: normal_ihc_data.tsv.zip, url: "https://www.proteinatlas.org/download/tsv/normal_ihc_data.tsv.zip"}
+    - {name: subcellular_location.tsv.zip, url: "https://www.proteinatlas.org/download/tsv/subcellular_location.tsv.zip"}
+    - {name: rna_tissue_consensus.tsv.zip, url: "https://www.proteinatlas.org/download/tsv/rna_tissue_consensus.tsv.zip"}
+    - {name: rna_celline.tsv.zip, url: "https://www.proteinatlas.org/download/tsv/rna_celline.tsv.zip"}
+    - {name: proteinatlas.tsv.zip, url: "https://www.proteinatlas.org/download/proteinatlas.tsv.zip"}
+    # cancer IHC: name changed across HPA versions; resolved by scraping download_page
+    - {name: cancer_ihc_data.tsv.zip, scrape_regex: "download/tsv/(cancer[a-z_]*|pathology)\\.tsv\\.zip"}
+opentargets:
+  dir: opentargets
+  base: "https://ftp.ebi.ac.uk/pub/databases/opentargets/platform/latest/output"
+  datasets: [target, target_tractability, target_prioritisation, target_safety_event,
+             association_overall_direct, drug_mechanism_of_action, drug_molecule,
+             clinical_indication, clinical_target, disease]
+uniprot:
+  dir: uniprot
+  files:
+    - {name: uniprot_human_reviewed.tsv.gz,
+       url: "https://rest.uniprot.org/uniprotkb/stream?query=%28organism_id%3A9606%29%20AND%20%28reviewed%3Atrue%29&format=tsv&compressed=true&fields=accession%2Cid%2Cgene_primary%2Cgene_names%2Cprotein_name%2Clength%2Ccc_subcellular_location%2Cft_topo_dom%2Cft_transmem%2Cft_signal%2Ckeyword%2Cxref_ensembl%2Cxref_hgnc%2Ccc_function"}
+hgnc:
+  dir: hgnc
+  files:
+    - {name: hgnc_complete_set.txt, url: "https://storage.googleapis.com/public-download-files/hgnc/tsv/tsv/hgnc_complete_set.txt"}
+surfaceome:
+  dir: surfaceome
+  local_files: [table_S3_surfaceome.xlsx, surfaceome_ids.txt, Dark_Surfaceome_Evidence_Atlas.xlsx, surfaceome_receptors.xlsx]
+proteomics:
+  dir: proteomics
+  files:
+    - {name: protein_quant_current_normalized.csv.gz, optional: true,
+       url: "https://gygi.hms.harvard.edu/data/ccle/protein_quant_current_normalized.csv.gz"}

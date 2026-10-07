@@ -1,0 +1,31 @@
+gene,context_type,context_key,profile,expected_min_percentile,kind
+ERBB2,cell_line,BT-474,surface,90,positive
+ERBB2,cell_line,SK-BR-3,surface,90,positive
+ERBB2,tcga,Breast Invasive Carcinoma,surface,90,positive
+ERBB2,cell_line,BT-474,any_modality,90,positive
+TACSTD2,lineage,Breast,surface,90,positive
+TACSTD2,tcga,Breast Invasive Carcinoma,surface,90,positive
+NECTIN4,tcga,Bladder Urothelial Carcinoma,surface,90,positive
+NECTIN4,lineage,Bladder/Urinary Tract,surface,90,positive
+CD19,primary_disease,B-Lymphoblastic Leukemia/Lymphoma,surface,90,positive
+CD19,target,Acute Lymphoblastic Leukemia,surface,90,positive
+MSLN,tcga,Mesothelioma,surface,90,positive
+MSLN,tcga,Ovarian Serous Cystadenocarcinoma,surface,90,positive
+CLDN18,tcga,Stomach Adenocarcinoma,surface,90,positive
+DLL3,primary_disease,Lung Neuroendocrine Tumor,surface,90,positive
+FOLR1,tcga,Ovarian Serous Cystadenocarcinoma,surface,90,positive
+GPC3,tcga,Liver Hepatocellular Carcinoma,surface,90,positive
+CEACAM5,tcga,Colon Adenocarcinoma,surface,90,positive
+EGFR,tcga,Head & Neck Squamous Cell Carcinoma,surface,90,positive
+MS4A1,primary_disease,Mature B-Cell Neoplasms,surface,90,positive
+MS4A1,tcga,Diffuse Large B-Cell Lymphoma,surface,90,positive
+TNFRSF17,primary_disease,Mature B-Cell Neoplasms,surface,80,positive
+FOLH1,tcga,Prostate Adenocarcinoma,surface,90,positive
+CD33,primary_disease,Acute Myeloid Leukemia,surface,85,positive
+CD33,tcga,Acute Myeloid Leukemia,surface,85,positive
+EPCAM,tcga,Colon Adenocarcinoma,surface,85,positive
+ACTB,tcga,Breast Invasive Carcinoma,surface,20,negative
+GAPDH,tcga,Breast Invasive Carcinoma,surface,20,negative
+ALB,tcga,Breast Invasive Carcinoma,surface,20,negative
+MYH7,cell_line,BT-474,surface,20,negative
+SCN5A,cell_line,BT-474,surface,20,negative
