@@ -25,6 +25,29 @@ make serve                                            # http://localhost:8000
 Development: `make dev` (API on :8000 with reload, Vite on :5173 proxying `/api`). Tests: `make test`.
 To expose the app to other machines: `.venv/bin/ct serve --host 0.0.0.0`.
 
+## Windows
+
+**WSL2 (recommended).** Inside an Ubuntu WSL shell the instructions above work unchanged, including `make`.
+
+**Native Windows (PowerShell).** The code is portable (pure Python + Node; DuckDB, pandas, pyarrow and FastAPI all ship
+Windows wheels; Windows 10/11 include `tar.exe`), only the `Makefile` is Unix-specific. Requirements: Python 3.11+ from
+python.org (tick "Add to PATH"), Node.js 18+, Git.
+
+```powershell
+git clone https://github.com/d-stauber/cancer-targets.git; cd cancer-targets
+powershell -ExecutionPolicy Bypass -File scripts\setup.ps1        # venv, Python deps, npm install, frontend build
+tar -xf $HOME\Downloads\cancer-targets-processed-<date>.tar -C data\
+.\.venv\Scripts\ct db
+.\.venv\Scripts\ct serve                                        # http://localhost:8000
+```
+Wherever this README says `.venv/bin/<cmd>`, use `.venv\Scripts\<cmd>` on Windows (`ct`, `pytest`, `uvicorn`).
+For development run the two servers in separate terminals: `.venv\Scripts\uvicorn cancer_targets.api.main:app --reload`
+and `cd web; npm run dev`.
+
+Caveats: stop the server before `ct db`, `ct build` or `ct score` — Windows locks the open database file and the rebuild
+replaces it (on macOS/Linux this is not necessary). The `.claude/launch.json` entry is macOS-specific and only used by the
+Claude desktop preview.
+
 ## Rebuilding from raw data
 
 ```bash
