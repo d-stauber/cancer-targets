@@ -8,7 +8,7 @@ per-context target rankings with adjustable weights.
 
 ## Quick start (with the prebuilt data bundle — recommended)
 
-The code is on GitHub; the data (~5 GB) is shared separately via Dropbox as two tarballs:
+The code is on GitHub; the data (~5 GB) is shared separately via [Dropbox](https://www.dropbox.com/scl/fo/jhh19v4aeivmwzyi50hnt/APFvghOPwPr9kIfE_u3LeU4?rlkey=e71l7aztf0bou3x6aape5cb4r&st=b36kavdg&dl=0) as two tarballs:
 
 | Bundle | Contents | Size | Needed? |
 |---|---|---|---|
