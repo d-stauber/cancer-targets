@@ -6,6 +6,7 @@ import Plot from '../components/Plot'
 import DataTable, { Col } from '../components/DataTable'
 import { Badge, ComponentLegend, Expandable, ScoreStack, Seg, Skeleton, Tile } from '../components/ui'
 import { SHORT } from '../components/ContextPicker'
+import DrugTable from '../components/DrugTable'
 import { plotTheme } from '../theme'
 
 const LEVEL = ['not detected', 'low', 'medium', 'high']
@@ -50,6 +51,7 @@ export default function Gene() {
   const rk = useQuery({ queryKey: ['rank', symbol, profile, types], queryFn: () => api.geneRank(symbol, { profile, min_pct: 0, limit: 80, types }) })
   const rs = useQuery({ queryKey: ['rank-summary', symbol, profile, types], queryFn: () => api.geneRankSummary(symbol, { profile, types }) })
   const weights = meta.data?.profiles[profile] || {}
+  const gd = useQuery({ queryKey: ['gene-drugs', symbol], queryFn: () => api.geneDrugs(symbol) })
   const best = rk.data?.rows?.[0]
   if (error) return <div className="error">{String(error)}</div>
   if (isLoading || !data) return <div className="card"><Skeleton rows={8} /></div>
@@ -134,6 +136,9 @@ export default function Gene() {
           <div style={{ marginTop: 10 }}><DataTable rows={rk.data?.rows || []} cols={cols} rowKey={r => r.context_id} defaultSort="score" maxHeight="64vh" loading={rk.isFetching} /></div>
         </div>
       </div>
+      {gd.data && gd.data.rows.length > 0 && (
+        <div className="card"><div className="card-head"><h2>Compounds annotated against {g.symbol} (PRISM)</h2><span className="small faint">{gd.data.rows.length} compounds · click a compound for per-line sensitivity</span></div>
+          <DrugTable rows={gd.data.rows} lfcKey="median_lfc" showDelta={false} maxHeight={320} /></div>)}
       <div className="card"><ExprPlot symbol={symbol} source="cell_lines" title="DepMap cell lines by lineage (each point is a line)" /></div>
       <div className="grid2">
         <div className="card"><ExprPlot symbol={symbol} source="tcga" title="TCGA / TARGET tumors and TCGA adjacent normals" /></div>

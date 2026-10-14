@@ -59,3 +59,13 @@ proteomics:
   files:
     - {name: protein_quant_current_normalized.csv.gz, optional: true,
        url: "https://gygi.hms.harvard.edu/data/ccle/protein_quant_current_normalized.csv.gz"}
+prism:
+  dir: prism
+  files:
+    # PRISM Repurposing Public 24Q2 (figshare article 25917643): 6,790 compounds x 919 lines, single dose 2.5 uM, log2 fold-change viability
+    - {name: Repurposing_Public_24Q2_Cell_Line_Meta_Data.csv, url: "https://ndownloader.figshare.com/files/46630978"}
+    - {name: Repurposing_Public_24Q2_Extended_Primary_Compound_List.csv, url: "https://ndownloader.figshare.com/files/46630981"}
+    - {name: Repurposing_Public_24Q2_Extended_Primary_Data_Matrix.csv, url: "https://ndownloader.figshare.com/files/46630984"}
+    # PRISM Repurposing 19Q4 secondary screen (figshare article 9393293): 8-point dose response, AUC / IC50 per compound x line
+    - {name: secondary-screen-dose-response-curve-parameters.csv, url: "https://ndownloader.figshare.com/files/20237739", optional: true}
+    - {name: secondary-screen-replicate-collapsed-treatment-info.csv, url: "https://ndownloader.figshare.com/files/20237763", optional: true}

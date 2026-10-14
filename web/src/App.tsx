@@ -4,8 +4,10 @@ import Explorer from './pages/Explorer'
 import Gene from './pages/Gene'
 import ContextPage from './pages/Context'
 import Controls from './pages/Controls'
+import Drug from './pages/Drug'
 import GeneSearch from './components/GeneSearch'
 import { ThemeContext, useTheme } from './theme'
+import DrugsHome from './pages/Drugs'
 
 export default function App() {
   const [theme, toggle] = useTheme()
@@ -15,6 +17,7 @@ export default function App() {
         <NavLink to="/" className="brand"><i />Cancer Targets</NavLink>
         <NavLink to="/explorer" className="link">Explorer</NavLink>
         <NavLink to="/context" className="link">Target rankings</NavLink>
+        <NavLink to="/drugs" className="link">Drugs</NavLink>
         <NavLink to="/controls" className="link">Custom controls</NavLink>
         <div className="spacer" />
         <GeneSearch />
@@ -28,6 +31,8 @@ export default function App() {
           <Route path="/context" element={<ContextPage />} />
           <Route path="/context/:id" element={<ContextPage />} />
           <Route path="/controls" element={<Controls />} />
+          <Route path="/drug/:id" element={<Drug />} />
+          <Route path="/drugs" element={<DrugsHome />} />
         </Routes>
       </main>
     </ThemeContext.Provider>

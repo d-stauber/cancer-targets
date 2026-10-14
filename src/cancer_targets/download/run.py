@@ -3,7 +3,7 @@ import logging, re, shutil
 from pathlib import Path
 import yaml, requests
 from ..paths import CONFIG, RAW
-from .fetch import download, list_links, UA
+from .fetch import download, list_links, UA, PLAIN_UA
 from .manifest import record
 from .depmap import download_depmap
 
@@ -25,7 +25,8 @@ def _simple(source: str, cfg: dict):
             if url.startswith("/"):
                 url = "https://www.proteinatlas.org" + url
         try:
-            info = download(url, dest / f["name"])
+            hdr = PLAIN_UA if "figshare" in url else None  # figshare serves files only to non-browser agents
+            info = download(url, dest / f["name"], headers=hdr)
             record(source, f["name"], release=cfg.get("release"), **info)
         except Exception as e:
             if f.get("optional"):

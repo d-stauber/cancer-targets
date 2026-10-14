@@ -5,6 +5,7 @@ import { api, Context as Ctx, fmt, qs, TYPE_LABELS } from '../api'
 import ContextPicker, { SHORT } from '../components/ContextPicker'
 import DataTable, { Col } from '../components/DataTable'
 import { Badge, COMP, COMP_COLOR, COMP_NAMES, ComponentLegend, Empty, ScoreStack, Seg, Tile } from '../components/ui'
+import DrugTable from '../components/DrugTable'
 
 const WEIGHT_PRESETS: Record<string, Record<string, number>> = {
   'Selectivity-first': { E: 0.2, S: 0.45, P: 0.1, T: 0.05, U: 0, R: 0.1, A: 0.1, D: 0 },
@@ -28,6 +29,8 @@ export default function ContextPage() {
   const params = { profile, weights, surface_only: surfaceOnly, min_expr: minExpr, min_selectivity: minSel, exclude_essential: exclEss, control: control?.context_id, gene_filter: filter, limit }
   const { data, isFetching, error } = useQuery({ queryKey: ['targets', id, params], queryFn: () => api.targets(Number(id), params), enabled: !!id && !!w })
   const rows = data?.rows || []
+  const [drugSort, setDrugSort] = useState('selectivity'); const [drugFilter, setDrugFilter] = useState('')
+  const drugs = useQuery({ queryKey: ['ctx-drugs', id, drugSort, drugFilter], queryFn: () => api.contextDrugs(Number(id), { sort: drugSort, limit: 300, target: drugFilter || undefined }), enabled: !!id })
   const isDefault = !!w && !!meta.data && JSON.stringify(w) === JSON.stringify(meta.data.profiles[profile])
   useEffect(() => { if (w && !isDefault) setWOpen(true) }, [isDefault])
   const matched = useMemo(() => all.data?.find(c => c.context_id === rows[0]?.matched_context_id) || null, [all.data, rows])
@@ -92,6 +95,19 @@ export default function ContextPage() {
           </div>
           <ComponentLegend weights={w || undefined} />
           <div style={{ marginTop: 10 }}><DataTable rows={rows} cols={cols} rowKey={r => r.gene_id} defaultSort="score" loading={isFetching} pageSize={150} /></div>
+        </div>
+      )}
+      {ctx && drugs.data && (
+        <div className="card">
+          <div className="card-head"><h2>Drug sensitivity (PRISM)</h2>
+            <div className="row center">
+              <select value={drugSort} onChange={e => setDrugSort(e.target.value)}><option value="selectivity">most selectively sensitive (Δ vs all lines)</option><option value="lfc">most sensitive here (absolute)</option><option value="auc">lowest AUC</option><option value="-lfc">most resistant</option></select>
+              <input type="text" placeholder="filter by target, e.g. ERBB2" value={drugFilter} style={{ width: 170 }} onChange={e => setDrugFilter(e.target.value)} />
+              <a className="btn secondary sm" href={`/api/contexts/${ctx.context_id}/drugs?${qs({ sort: drugSort, target: drugFilter || undefined, format: 'csv' })}`}>CSV</a>
+            </div></div>
+          {!drugs.data.screened ? <Empty title="Not in the PRISM screens">{ctx.n_members > 1 ? 'None of the member lines were screened.' : 'This cell line was not part of the PRISM Repurposing cell-line pools.'}</Empty> : (
+            <><p className="small muted">{ctx.n_members > 1 ? `Median over ${drugs.data.n_lines_screened} screened member lines. ` : ''}log2 fold-change viability at 2.5 µM vs DMSO; red = sensitive (&lt; −1).</p>
+              <DrugTable rows={drugs.data.rows} loading={drugs.isFetching} /></>)}
         </div>
       )}
     </div>

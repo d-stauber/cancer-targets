@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 from ..paths import WEB_DIST
-from .routers import meta, genes, contexts, explorer, controls
+from .routers import meta, genes, contexts, explorer, controls, drugs
 
 app = FastAPI(title="Cancer Targets API", version="0.1.0")
 app.add_middleware(CORSMiddleware, allow_origins=["http://localhost:5173", "http://127.0.0.1:5173"], allow_methods=["*"], allow_headers=["*"])
@@ -13,7 +13,7 @@ def health():
     from .db import q, DB
     n = int(q("select count(*) as n from contexts").n[0])
     return {"status": "ok", "contexts": n, "db": str(DB)}
-for r in (meta, genes, contexts, explorer, controls):
+for r in (meta, genes, contexts, explorer, controls, drugs):
     app.include_router(r.router, prefix="/api")
 
 if WEB_DIST.exists():

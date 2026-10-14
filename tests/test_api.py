@@ -85,3 +85,20 @@ def test_custom_upload_is_scored(client, tmp_path, monkeypatch):
     t = client.get(f"/api/contexts/{j['context_id']}/targets?limit=20&gene_filter=ERBB2").json()
     assert t["rows"] and t["rows"][0]["symbol"] == "ERBB2" and t["rows"][0]["rank"] <= 20 and t["total"] > 2000
     sc = client.get(f"/api/explorer/scatter?x={j['context_id']}&y={j['context_id']}").json(); assert sc["n"] > 1000
+
+def test_drugs(client):
+    hits = client.get("/api/drugs/search?q=lapatinib").json()
+    assert hits and hits[0]["name"].upper() == "LAPATINIB"
+    d = client.get(f"/api/drugs/{hits[0]['broad_id']}").json()
+    assert any(t["symbol"] == "ERBB2" for t in d["targets"]) and len(d["lines"]) > 500
+    bt = client.get("/api/contexts?q=BT-474&type=cell_line").json()[0]
+    cd = client.get(f"/api/contexts/{bt['context_id']}/drugs?target=ERBB2&limit=20").json()
+    assert cd["screened"] and cd["rows"] and all("ERBB2" in (r["targets"] or "") for r in cd["rows"])
+    # HER2-amplified BT-474 should be sensitive (log2 FC < -1) to at least one ERBB2 inhibitor
+    assert min(r["lfc"] for r in cd["rows"]) < -1
+    lin = client.get("/api/contexts?q=Breast&type=lineage").json()[0]
+    agg = client.get(f"/api/contexts/{lin['context_id']}/drugs?limit=5").json()
+    assert agg["screened"] and agg["n_lines_screened"] > 10 and agg["rows"][0]["n_lines"] >= 2
+    gd = client.get("/api/genes/ERBB2/drugs").json()
+    assert any(r["name"].upper() == "LAPATINIB" for r in gd["rows"])
+    assert client.get("/api/drugs/does-not-exist").status_code == 404

@@ -30,6 +30,10 @@ export const api = {
   scatter: (p: Record<string, any>) => get<any>(`/api/explorer/scatter?${qs(p)}`),
   ranking: (p: Record<string, any>) => get<any>(`/api/explorer/ranking?${qs(p)}`),
   controls: () => get<Context[]>('/api/controls'),
+  drugSearch: (q: string) => get<any[]>(`/api/drugs/search?q=${encodeURIComponent(q)}`),
+  drug: (id: string) => get<any>(`/api/drugs/${encodeURIComponent(id)}`),
+  contextDrugs: (id: number, p: Record<string, any>) => get<any>(`/api/contexts/${id}/drugs?${qs(p)}`),
+  geneDrugs: (s: string, contextId?: number) => get<any>(`/api/genes/${encodeURIComponent(s)}/drugs${contextId != null ? `?context_id=${contextId}` : ''}`),
 }
 
 export function qs(p: Record<string, any>) {

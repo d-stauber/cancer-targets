@@ -69,6 +69,7 @@ make score            # gene x context components, composites, ranks; then bench
 | HGNC | master gene map (19.3k protein-coding genes) |
 | Bausch-Fluck 2018 in silico surfaceome + local dark-surfaceome atlas (from `~/Downloads`) | surface labels, ML score, CD numbers |
 | CCLE proteomics (Nusinow 2020) | tumor protein evidence for cell lines |
+| PRISM Repurposing (Broad; Public 24Q2 extended primary: 6,790 compounds × 919 lines at 2.5 µM; 19Q4 secondary: dose-response AUC/IC50 for 1,448 compounds × 489 lines) | drug sensitivity per cell line and per lineage; compound ↔ target links |
 
 **Newer DepMap releases**: the DepMap portal blocks scripted downloads; drop the files listed in `config/sources.yaml`
 into `data/raw/depmap/` (or run `ct download -s depmap --from <dir>`) and rerun `make build && make score`.
@@ -122,13 +123,17 @@ housekeeping / cardiac genes are gated or score < 0.25; the report is written to
 * **Target rankings** – profile toggle, matched-control override, filters, collapsible weight sliders with presets
   (selectivity-first, novelty, ADC/antibody, inhibitor/degrader), context tiles, sortable table with breakdown bars, CSV.
 * **Custom controls** – drag-and-drop upload of an expression profile.
+* **Drugs** – compound search and drug pages (sensitivity by lineage and per cell line, targets); a "Drug sensitivity (PRISM)"
+  panel on every cell-line / lineage rankings page (sort by sensitivity, selectivity vs all lines, or AUC; filter by target);
+  and "compounds annotated against this gene" on gene pages. Sensitivity call: log2 FC viability < −1 at 2.5 µM.
 Light and dark themes (toggle in the nav; follows the OS by default). Chart colors follow a CVD-validated categorical palette.
 
 ## API
 `/api/meta`, `/api/contexts?type=&q=`, `/api/contexts/{id}/targets?profile=&weights=&surface_only=&control=&format=csv`,
 `/api/genes/search?q=`, `/api/genes/{symbol}`, `/api/genes/{symbol}/expression?source=cell_lines|lineages|tcga|gtex`,
 `/api/genes/{symbol}/rankings?profile=`, `/api/explorer/scatter?x=&y=&stat=`, `/api/explorer/ranking?x=&y=&format=csv`,
-`GET /api/genes/{symbol}/rank_summary`, `POST /api/controls` (upload a custom expression profile; it is quantile-normalised
+`GET /api/genes/{symbol}/rank_summary`, `GET /api/drugs/search?q=`, `GET /api/drugs/{broad_id}`,
+`GET /api/contexts/{id}/drugs?sort=lfc|selectivity|auc&target=`, `GET /api/genes/{symbol}/drugs`, `POST /api/controls` (upload a custom expression profile; it is quantile-normalised
 and scored immediately, 50 MB limit), `GET /api/health`. Ranks and percentiles are always computed over the whole context;
 table filters apply afterwards. Weights must be in [0, 1]. Interactive docs at `/docs`.
 
