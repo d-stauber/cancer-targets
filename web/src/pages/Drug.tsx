@@ -50,12 +50,12 @@ export default function Drug() {
         <Tile label="Median log2 FC" value={fmt(c.median_lfc)} hint="across all screened lines" />
         <Tile label="Dose-response" value={c.n_lines_auc ?? 0} hint="lines with AUC / IC50 (19Q4 secondary)" />
       </div>
-      <div className="grid2">
+      <div className="grid2" style={{ gridTemplateColumns: '2fr 3fr' }}>
         <div className="card">
           <h2>Sensitivity by lineage</h2>
           {byLin.length === 0 ? <Empty title="No lineage data" /> : <Plot data={[{ type: 'bar', orientation: 'h', y: byLin.map(b => b.lineage), x: byLin.map(b => b.median_lfc), marker: { color: byLin.map(b => (b.median_lfc < thr ? t.s2 : t.s1)) },
             customdata: byLin.map(b => [b.n, b.frac_sensitive]), hovertemplate: '%{y}<br>median log2 FC %{x:.2f}<br>n=%{customdata[0]} · %{customdata[1]:.0%} sensitive<extra></extra>' }]}
-            layout={{ height: Math.max(320, byLin.length * 18 + 60), margin: { l: 170, r: 10, t: 10, b: 40 }, xaxis: { title: { text: 'median log2 FC viability' }, zeroline: true }, yaxis: { autorange: 'reversed', tickfont: { size: 10 } }, shapes: [{ type: 'line', x0: thr, x1: thr, y0: -0.5, y1: byLin.length - 0.5, line: { color: t.s2, dash: 'dot', width: 1 } }] }} />}
+            layout={{ height: Math.max(360, byLin.length * 20 + 70), margin: { l: 160, r: 20, t: 10, b: 50 }, xaxis: { title: { text: 'median log2 FC viability (2.5 µM)' }, zeroline: true, automargin: true }, yaxis: { autorange: 'reversed', tickfont: { size: 10 } }, shapes: [{ type: 'line', x0: thr, x1: thr, y0: -0.5, y1: byLin.length - 0.5, line: { color: t.s2, dash: 'dot', width: 1 } }] }} />}
           <p className="small faint">Orange = lineage median below the sensitivity threshold. Lineages with ≥ 3 screened lines.</p>
         </div>
         <div className="card">
