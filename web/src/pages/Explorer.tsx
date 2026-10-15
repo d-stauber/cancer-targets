@@ -7,13 +7,17 @@ import DataTable, { Col } from '../components/DataTable'
 import Plot from '../components/Plot'
 import { Badge, Empty, Seg } from '../components/ui'
 import { plotTheme } from '../theme'
+import DrugExplorer from './DrugExplorer'
 
 type Row = { symbol: string; x: number; y: number; lfc: number; is_surface: boolean; U_tier: string; max_phase: number | null }
+const DRUG_OK = new Set(['cell_line', 'lineage', 'primary_disease', 'subtype'])
 const PRESETS: { label: string; x: [string, string]; y: [string, string] }[] = [
   { label: 'BT-474 vs HMEL (immortalised breast epithelium)', x: ['cell_line', 'BT-474'], y: ['cell_line', 'HMEL'] },
   { label: 'BT-474 vs GTEx breast', x: ['cell_line', 'BT-474'], y: ['gtex_toil', 'GTEx (TOIL): Breast'] },
   { label: 'MDA-MB-231 vs HMEL', x: ['cell_line', 'MDA-MB-231'], y: ['cell_line', 'HMEL'] },
   { label: 'HER2+ breast lines vs GTEx breast', x: ['subtype', 'Breast Invasive Ductal Carcinoma'], y: ['gtex_toil', 'GTEx (TOIL): Breast'] },
+  { label: 'BT-474 vs MDA-MB-231', x: ['cell_line', 'BT-474'], y: ['cell_line', 'MDA-MB-231'] },
+  { label: 'Breast vs Lung lines', x: ['lineage', 'Breast'], y: ['lineage', 'Lung'] },
   { label: 'TCGA breast vs adjacent normal', x: ['tcga', 'Breast Invasive Carcinoma'], y: ['tcga_normal', 'TCGA normal: Breast'] },
   { label: 'TCGA lung adeno vs GTEx lung', x: ['tcga', 'Lung Adenocarcinoma'], y: ['gtex_toil', 'GTEx (TOIL): Lung'] },
 ]
@@ -23,13 +27,15 @@ export default function Explorer() {
   const all = useQuery({ queryKey: ['contexts-all'], queryFn: () => api.contexts() })
   const byId = (id: string | null) => all.data?.find(c => String(c.context_id) === id) || null
   const x = byId(sp.get('x')), y = byId(sp.get('y'))
+  const mode = sp.get('mode') === 'drugs' ? 'drugs' : 'expression'
+  const setMode = (m: string) => setSp(p => { if (m === 'drugs') p.set('mode', 'drugs'); else p.delete('mode'); return p })
   const setX = (c: Context) => setSp(p => { p.set('x', String(c.context_id)); return p })
   const setY = (c: Context) => setSp(p => { p.set('y', String(c.context_id)); return p })
   const [stat, setStat] = useState('qn'); const [surfaceOnly, setSurfaceOnly] = useState(false); const [minExpr, setMinExpr] = useState(1)
   const [highlight, setHighlight] = useState(''); const [dir, setDir] = useState<'x' | 'y'>('x'); const [sel, setSel] = useState<Row | null>(null)
   const ready = !!x && !!y
   const params = { x: x?.context_id, y: y?.context_id, stat, surface_only: surfaceOnly, min_expr: minExpr }
-  const { data, isFetching, error } = useQuery({ queryKey: ['scatter', params], queryFn: () => api.scatter(params), enabled: ready })
+  const { data, isFetching, error } = useQuery({ queryKey: ['scatter', params], queryFn: () => api.scatter(params), enabled: ready && mode === 'expression' })
   const hl = useMemo(() => new Set(highlight.toUpperCase().split(/[\s,]+/).filter(Boolean)), [highlight])
   const rows: Row[] = useMemo(() => {
     if (!data) return []
@@ -69,15 +75,17 @@ export default function Explorer() {
   ]
   const find = (t: [string, string]) => all.data?.find(c => c.context_type === t[0] && c.name === t[1])
   const presets = useMemo(() => PRESETS.filter(p => find(p.x) && find(p.y)), [all.data])
-  const applyPreset = (p: typeof PRESETS[number]) => { const fx = find(p.x), fy = find(p.y); if (fx && fy) setSp({ x: String(fx.context_id), y: String(fy.context_id) }) }
+  const applyPreset = (p: typeof PRESETS[number]) => { const fx = find(p.x), fy = find(p.y); if (fx && fy) setSp(sp0 => { sp0.set('x', String(fx.context_id)); sp0.set('y', String(fy.context_id)); return sp0 }) }
   return (
     <div className="stack">
-      <div className="page-head"><div><h1>Expression explorer</h1><p className="sub">Compare two contexts gene by gene. Click a point or row to inspect a gene.</p></div></div>
+      <div className="page-head"><div><h1>Explorer</h1><p className="sub">{mode === 'drugs' ? 'Compare drug sensitivity (PRISM) between two contexts compound by compound.' : 'Compare two contexts gene by gene. Click a point or row to inspect a gene.'}</p></div>
+        <Seg value={mode} onChange={setMode} options={[{ value: 'expression', label: 'Gene expression' }, { value: 'drugs', label: 'Drug sensitivity' }]} /></div>
       <div className="card">
         <div className="row">
-          <ContextPicker label="X axis" value={x} onChange={setX} />
-          <button className="btn secondary" title="Swap axes" style={{ alignSelf: 'flex-end' }} disabled={!ready} onClick={() => setSp({ x: String(y!.context_id), y: String(x!.context_id) })}>⇄</button>
-          <ContextPicker label="Y axis" value={y} onChange={setY} />
+          <ContextPicker label="X axis" value={x} onChange={setX} types={mode === 'drugs' ? ['cell_line', 'lineage', 'primary_disease', 'subtype'] : undefined} />
+          <button className="btn secondary" title="Swap axes" style={{ alignSelf: 'flex-end' }} disabled={!ready} onClick={() => setSp(p => { p.set('x', String(y!.context_id)); p.set('y', String(x!.context_id)); return p })}>⇄</button>
+          <ContextPicker label="Y axis" value={y} onChange={setY} types={mode === 'drugs' ? ['cell_line', 'lineage', 'primary_disease', 'subtype'] : undefined} />
+          {mode === 'expression' && <>
           <div className="field"><label className="lbl">Statistic</label>
             <select value={stat} onChange={e => setStat(e.target.value)}>
               <option value="qn">Quantile-normalised log2(TPM+1)</option><option value="median">Raw median log2(TPM+1)</option><option value="p90">90th percentile</option>
@@ -86,14 +94,16 @@ export default function Explorer() {
           <div className="field"><label className="lbl">Min expression</label><input type="number" step="0.5" value={minExpr} style={{ width: 80 }} onChange={e => setMinExpr(+e.target.value)} /></div>
           <label className="check"><input type="checkbox" checked={surfaceOnly} onChange={e => setSurfaceOnly(e.target.checked)} />Surface only</label>
           <div className="field" style={{ flex: 1, minWidth: 200 }}><label className="lbl">Highlight genes</label><input type="text" value={highlight} onChange={e => setHighlight(e.target.value)} placeholder="ERBB2 GRB7 TACSTD2" /></div>
+          </>}
         </div>
         {missing.length > 0 && <p className="small" style={{ marginTop: 8, color: 'var(--serious)' }}>Not in this plot (unknown symbol or below the minimum expression on both axes): {missing.join(', ')}</p>}
-        <div className="row center" style={{ marginTop: 10 }}><span className="small faint">Presets:</span><div className="chips">{presets.map(p => <button key={p.label} className="chip" onClick={() => applyPreset(p)}>{p.label}</button>)}</div></div>
+        <div className="row center" style={{ marginTop: 10 }}><span className="small faint">Presets:</span><div className="chips">{(mode === 'drugs' ? presets.filter(p => DRUG_OK.has(p.x[0]) && DRUG_OK.has(p.y[0])) : presets).map(p => <button key={p.label} className="chip" onClick={() => applyPreset(p)}>{p.label}</button>)}</div></div>
         {ready && x!.source !== y!.source && stat === 'median' && <p className="small muted" style={{ marginTop: 8 }}>These contexts come from different RNA-seq pipelines; raw values are only approximately comparable. The quantile-normalised statistic is recommended.</p>}
       </div>
-      {!ready && <div className="card"><Empty title="Pick two contexts to compare">Any DepMap cell line, lineage or subtype, non-cancerous line group, TCGA/TARGET cancer type, TCGA adjacent normal, GTEx tissue, or a custom upload. Try a preset above.</Empty></div>}
-      {error && <div className="error">{String(error)}</div>}
-      {ready && (
+      {mode === 'drugs' && <DrugExplorer x={x} y={y} />}
+      {mode === 'expression' && !ready && <div className="card"><Empty title="Pick two contexts to compare">Any DepMap cell line, lineage or subtype, non-cancerous line group, TCGA/TARGET cancer type, TCGA adjacent normal, GTEx tissue, or a custom upload. Try a preset above.</Empty></div>}
+      {mode === 'expression' && error && <div className="error">{String(error)}</div>}
+      {mode === 'expression' && ready && (
         <div className="grid-explorer">
           <div className="card">
             <div className="card-head"><h2>{x!.name} vs {y!.name}</h2><span className="small faint">{isFetching ? <span className="spin" /> : `${data?.n.toLocaleString() ?? ''} genes`}</span></div>

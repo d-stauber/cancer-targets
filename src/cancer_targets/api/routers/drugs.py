@@ -99,3 +99,48 @@ def gene_drugs(symbol: str, context_id: Optional[int] = None):
     d = q("""select p.broad_id, p.name, p.moa, p.targets, p.n_lines, p.median_lfc, p.frac_sensitive, null as lfc_in_context
              from prism_targets t join prism_compounds p using(broad_id) where t.gene_id = ? order by p.frac_sensitive desc nulls last, p.name""", [gid])
     return {"gene": g.symbol[0], "context_id": None, "rows": records(d)}
+
+def _profile_sql(alias: str, metric: str) -> str:
+    """Per-compound value for a context: the line's own value, or the median over screened member lines for groups."""
+    if metric == "auc":
+        return f"""(select p.core_id as cid, median(a.auc) as v, count(*) as n
+                    from context_members m join prism_auc a on a.model_id = m.sample_id join prism_compounds p on p.core_id = a.core_id
+                    where m.context_id = ? group by 1) {alias}"""
+    return f"""(select l.broad_id as cid, median(l.lfc) as v, count(*) as n
+                from context_members m join prism_lfc l on l.model_id = m.sample_id
+                where m.context_id = ? group by 1) {alias}"""
+
+def _drug_scatter(x: int, y: int, metric: str, min_effect: float):
+    key = "p.core_id" if metric == "auc" else "p.broad_id"
+    sql = f"""select p.broad_id, p.name, p.moa, p.targets, a.v as x, b.v as y, (a.v - b.v)::FLOAT as delta, a.n as n_x, b.n as n_y,
+                     p.median_lfc, p.frac_sensitive
+              from {_profile_sql('a', metric)} join {_profile_sql('b', metric)} using(cid)
+              join (select distinct on (core_id) * from prism_compounds order by core_id, n_lines desc) p on {key} = cid
+              where least(a.v, b.v) <= ? order by delta"""
+    thr = -min_effect if metric == "lfc" else (1 - min_effect if min_effect else 10)
+    return q(sql, [x, y, thr])
+
+@router.get("/explorer/drugs")
+def drug_scatter(x: int, y: int, metric: str = "lfc", min_effect: float = 0.0):
+    """Compound-level comparison of two contexts. metric=lfc (log2 FC viability at 2.5 uM) or auc (dose-response)."""
+    if metric not in ("lfc", "auc"):
+        raise HTTPException(400, "metric must be lfc or auc")
+    names = q("select context_id, name, context_type, n_members from all_contexts where context_id in (?, ?)", [x, y])
+    if len(names) < 2 and x != y:
+        raise HTTPException(404, "context not found")
+    d = _drug_scatter(x, y, metric, min_effect)
+    nx = int(q("select count(distinct l.model_id) as n from context_members m join prism_lfc l on l.model_id = m.sample_id where m.context_id = ?", [x]).n[0])
+    ny = int(q("select count(distinct l.model_id) as n from context_members m join prism_lfc l on l.model_id = m.sample_id where m.context_id = ?", [y]).n[0])
+    from ..db import columnar
+    return {"x": records(names[names.context_id == x])[0] if (names.context_id == x).any() else None,
+            "y": records(names[names.context_id == y])[0] if (names.context_id == y).any() else None,
+            "metric": metric, "n": len(d), "n_lines_x": nx, "n_lines_y": ny, "data": columnar(d)}
+
+@router.get("/explorer/drugs/ranking")
+def drug_ranking(x: int, y: int, metric: str = "lfc", sort: str = "delta", limit: int = 200, format: str = "json"):
+    d = _drug_scatter(x, y, metric, 0.0)
+    d = d.sort_values(sort.lstrip("-"), ascending=not sort.startswith("-"))
+    if format == "csv":
+        buf = io.StringIO(); d.to_csv(buf, index=False)
+        return StreamingResponse(iter([buf.getvalue()]), media_type="text/csv", headers={"Content-Disposition": "attachment; filename=drug_ranking.csv"})
+    return {"n": len(d), "rows": records(d.head(limit))}

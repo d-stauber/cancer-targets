@@ -103,6 +103,7 @@ export default function ContextPage() {
             <div className="row center">
               <select value={drugSort} onChange={e => setDrugSort(e.target.value)}><option value="selectivity">most selectively sensitive (Δ vs all lines)</option><option value="lfc">most sensitive here (absolute)</option><option value="auc">lowest AUC</option><option value="-lfc">most resistant</option></select>
               <input type="text" placeholder="filter by target, e.g. ERBB2" value={drugFilter} style={{ width: 170 }} onChange={e => setDrugFilter(e.target.value)} />
+              <Link className="btn secondary sm" to={`/explorer?mode=drugs&x=${ctx.context_id}`}>Compare vs another context</Link>
               <a className="btn secondary sm" href={`/api/contexts/${ctx.context_id}/drugs?${qs({ sort: drugSort, target: drugFilter || undefined, format: 'csv' })}`}>CSV</a>
             </div></div>
           {!drugs.data.screened ? <Empty title="Not in the PRISM screens">{ctx.n_members > 1 ? 'None of the member lines were screened.' : 'This cell line was not part of the PRISM Repurposing cell-line pools.'}</Empty> : (

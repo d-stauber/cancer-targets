@@ -102,3 +102,15 @@ def test_drugs(client):
     gd = client.get("/api/genes/ERBB2/drugs").json()
     assert any(r["name"].upper() == "LAPATINIB" for r in gd["rows"])
     assert client.get("/api/drugs/does-not-exist").status_code == 404
+
+def test_drug_explorer(client):
+    bt = client.get("/api/contexts?q=BT-474&type=cell_line").json()[0]["context_id"]
+    mda = client.get("/api/contexts?q=MDA-MB-231&type=cell_line").json()[0]["context_id"]
+    r = client.get(f"/api/explorer/drugs?x={bt}&y={mda}").json()
+    assert r["n"] > 4000 and len(r["data"]["name"]) == r["n"]
+    i = r["data"]["name"].index("LAPATINIB")
+    assert r["data"]["delta"][i] < -1  # HER2+ BT-474 more sensitive than TNBC MDA-MB-231
+    assert client.get(f"/api/explorer/drugs?x={bt}&y={mda}&metric=auc").json()["n"] > 1000
+    assert client.get(f"/api/explorer/drugs?x={bt}&y={mda}&metric=bogus").status_code == 400
+    csv = client.get(f"/api/explorer/drugs/ranking?x={bt}&y={mda}&format=csv")
+    assert csv.headers["content-type"].startswith("text/csv") and "LAPATINIB" in csv.text
