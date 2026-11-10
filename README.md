@@ -126,6 +126,10 @@ housekeeping / cardiac genes are gated or score < 0.25; the report is written to
 * **Drugs** – compound search and drug pages (sensitivity by lineage and per cell line, targets); a "Drug sensitivity (PRISM)"
   panel on every cell-line / lineage rankings page (sort by sensitivity, selectivity vs all lines, or AUC; filter by target);
   and "compounds annotated against this gene" on gene pages. Sensitivity call: log2 FC viability < −1 at 2.5 µM.
+Every chart's camera button opens an **export dialog** with a live preview: edit title and axis labels, font and sizes, grid
+lines, axis box and tick marks, axis ranges / tick spacing / log scale, marker size, legend position, background (white,
+transparent, dark), pixel size or journal presets (3.5″, 7″), resolution (1–4×) and format (PNG, SVG, JPEG); style choices are
+remembered between exports.
 Light and dark themes (toggle in the nav; follows the OS by default). Chart colors follow a CVD-validated categorical palette.
 
 ## API
