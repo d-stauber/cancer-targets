@@ -10,13 +10,19 @@ D = RAW / "depmap"
 
 def _wide_to_long(path, value_name: str, source: str) -> pd.DataFrame:
     gm = get_mapper()
-    df = pd.read_csv(path, index_col=0)
-    if df.index.name is None or df.index.name == "Unnamed: 0":
-        df.index.name = "model_id"
-    # some releases have a ProfileID/ModelID column; keep ModelID rows only
+    df = pd.read_csv(path, index_col=0, low_memory=False)
+    # newer releases are per sequencing profile with metadata columns; keep the default entry per model
+    default_col = next((c for c in df.columns if c.lower().startswith("isdefaultentryformodel")), None)
+    if default_col is not None:
+        df = df[df[default_col].astype(str).str.lower().isin(["yes", "true", "1"])]
     if "ModelID" in df.columns:
         df = df.set_index("ModelID")
     df = df.loc[df.index.astype(str).str.startswith("ACH-")]
+    df = df[~df.index.duplicated(keep="first")]
+    meta = [c for c in df.columns if not pd.api.types.is_numeric_dtype(df[c]) or c.lower().startswith(("isdefault", "modelcondition", "sequencing", "profile"))]
+    if meta:
+        log.info("%s: dropping metadata columns %s", source, meta[:8])
+        df = df.drop(columns=meta)
     ids = pd.Series(df.columns).map(gm.depmap_column)
     unmapped = [c for c, i in zip(df.columns, ids) if pd.isna(i)]
     log_unmapped(source, unmapped)

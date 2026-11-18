@@ -4,11 +4,12 @@ depmap:
   dir: depmap
   release_title_patterns: ["DepMap {q} Public", "DepMap Public {q}"]
   # candidate quarters tried newest-first for figshare discovery
-  quarters: ["26Q3", "26Q2", "26Q1", "25Q4", "25Q3", "25Q2", "25Q1", "24Q4"]
+  quarters: ["26Q4", "26Q3", "26Q2", "26Q1", "25Q4", "25Q3", "25Q2", "25Q1", "24Q4"]
   portal_files_api: "https://depmap.org/portal/api/download/files"
   files:
     - {name: Model.csv, regex: "^Model\\.csv$"}
-    - {name: OmicsExpressionProteinCodingGenesTPMLogp1.csv, regex: "^OmicsExpressionProteinCodingGenesTPMLogp1.*\\.csv$"}
+    # renamed in 26Q3 to OmicsExpressionTPMLogp1HumanProteinCodingGenes.csv; stored under the canonical name below
+    - {name: OmicsExpressionProteinCodingGenesTPMLogp1.csv, regex: "^(OmicsExpressionProteinCodingGenesTPMLogp1|OmicsExpressionTPMLogp1HumanProteinCodingGenes).*\\.csv$"}
     - {name: CRISPRGeneEffect.csv, regex: "^CRISPRGeneEffect\\.csv$"}
     - {name: CRISPRInferredCommonEssentials.csv, regex: "^CRISPRInferredCommonEssentials\\.csv$"}
     - {name: OmicsProfiles.csv, regex: "^OmicsProfiles\\.csv$"}
@@ -27,6 +28,7 @@ xena:
     - {name: gencode.v23.annotation.gene.probemap, url: "https://toil.xenahubs.net/download/probeMap/gencode.v23.annotation.gene.probemap"}
 hpa:
   dir: hpa
+  release: v26.0
   download_page: "https://www.proteinatlas.org/about/download"
   files:
     - {name: normal_ihc_data.tsv.zip, url: "https://www.proteinatlas.org/download/tsv/normal_ihc_data.tsv.zip"}

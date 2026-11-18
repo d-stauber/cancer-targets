@@ -14,7 +14,7 @@ lineage,Pleura,Mesothelioma,Lung,Lung,Lung,,mesothelioma
 lineage,Myeloid,Acute Myeloid Leukemia,Whole_Blood,Blood,Bone marrow,,acute myeloid leukemia|leukemia
 primary_disease,Acute Myeloid Leukemia,Acute Myeloid Leukemia,Whole_Blood,Blood,Bone marrow,,acute myeloid leukemia
 lineage,Lymphoid,Diffuse Large B-Cell Lymphoma|Acute Lymphoblastic Leukemia,Whole_Blood,Blood,Lymph node,lymphoma,lymphoma|lymphoid leukemia
-primary_disease,B-Lymphoblastic Leukemia/Lymphoma,Acute Lymphoblastic Leukemia,Whole_Blood,Blood,Bone marrow,,B-cell acute lymphoblastic leukemia|acute lymphoblastic leukemia
+primary_disease,B-Cell Acute Lymphoblastic Leukemia,Acute Lymphoblastic Leukemia,Whole_Blood,Blood,Bone marrow,,B-cell acute lymphoblastic leukemia|acute lymphoblastic leukemia
 primary_disease,T-Lymphoblastic Leukemia/Lymphoma,Acute Lymphoblastic Leukemia,Whole_Blood,Blood,Bone marrow,,T-cell acute lymphoblastic leukemia|acute lymphoblastic leukemia
 primary_disease,Mature B-Cell Neoplasms,Diffuse Large B-Cell Lymphoma,Whole_Blood,Blood,Lymph node,lymphoma,B-cell lymphoma|lymphoma|multiple myeloma
 primary_disease,Mature T and NK Neoplasms,,Whole_Blood,Blood,Lymph node,lymphoma,T-cell lymphoma|lymphoma
@@ -29,6 +29,7 @@ lineage,Kidney,Kidney Clear Cell Carcinoma|Kidney Papillary Cell Carcinoma|Kidne
 primary_disease,Renal Cell Carcinoma,Kidney Clear Cell Carcinoma|Kidney Papillary Cell Carcinoma|Kidney Chromophobe,Kidney_Cortex,Kidney,Kidney,renal cancer,renal cell carcinoma
 lineage,CNS/Brain,Glioblastoma Multiforme|Brain Lower Grade Glioma,Brain_Cortex,Brain,Cerebral cortex,glioma,glioma|brain cancer
 primary_disease,Diffuse Glioma,Glioblastoma Multiforme|Brain Lower Grade Glioma,Brain_Cortex,Brain,Cerebral cortex,glioma,glioma|glioblastoma
+primary_disease,Adult-Type Diffuse Glioma,Glioblastoma Multiforme|Brain Lower Grade Glioma,Brain_Cortex,Brain,Cerebral cortex,glioma,glioma|glioblastoma
 primary_disease,Embryonal Tumor,,Brain_Cerebellum,Brain,Cerebellum,glioma,medulloblastoma|embryonal tumor
 lineage,Prostate,Prostate Adenocarcinoma,Prostate,Prostate,Prostate,prostate cancer,prostate carcinoma|prostate cancer
 lineage,Head and Neck,Head & Neck Squamous Cell Carcinoma,Minor_Salivary_Gland,Salivary Gland,Oral mucosa,head and neck cancer,head and neck squamous cell carcinoma|head and neck cancer

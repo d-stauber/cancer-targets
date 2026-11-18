@@ -7,7 +7,7 @@ TACSTD2,lineage,Breast,surface,90,positive
 TACSTD2,tcga,Breast Invasive Carcinoma,surface,90,positive
 NECTIN4,tcga,Bladder Urothelial Carcinoma,surface,90,positive
 NECTIN4,lineage,Bladder/Urinary Tract,surface,90,positive
-CD19,primary_disease,B-Lymphoblastic Leukemia/Lymphoma,surface,90,positive
+CD19,primary_disease,B-Cell Acute Lymphoblastic Leukemia,surface,90,positive
 CD19,target,Acute Lymphoblastic Leukemia,surface,90,positive
 MSLN,tcga,Mesothelioma,surface,90,positive
 MSLN,tcga,Ovarian Serous Cystadenocarcinoma,surface,90,positive

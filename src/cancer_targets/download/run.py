@@ -58,7 +58,7 @@ def _surfaceome(cfg: dict, from_dir: Path | None):
         elif not s.exists():
             log.warning("local surfaceome file missing: %s", s)
 
-def run(sources: list[str] | None = None, from_dir: str | None = None):
+def run(sources: list[str] | None = None, from_dir: str | None = None, release: str | None = None):
     cfg = load_sources()
     for source, c in cfg.items():
         if sources and source not in sources:
@@ -67,10 +67,13 @@ def run(sources: list[str] | None = None, from_dir: str | None = None):
         if source == "depmap":
             if from_dir:
                 d = RAW / c["dir"]; d.mkdir(parents=True, exist_ok=True)
+                src = sorted(Path(from_dir).expanduser().glob("*.csv"), key=lambda p: p.stat().st_mtime, reverse=True)
                 for f in c["files"]:
-                    s = Path(from_dir) / f["name"]
-                    if s.exists() and not (d / f["name"]).exists():
-                        shutil.copy2(s, d / f["name"]); record("depmap", f["name"], url=str(s), bytes=s.stat().st_size)
+                    hit = next((p for p in src if re.match(f.get("regex", "^" + re.escape(f["name"]) + "$"), p.name)), None)
+                    if hit and not (d / f["name"]).exists():
+                        shutil.copy2(hit, d / f["name"])
+                        record("depmap", f["name"], url=str(hit), source_name=hit.name, bytes=hit.stat().st_size, release=release)
+                        log.info("copied %s -> %s", hit.name, f["name"])
             download_depmap(c, RAW / c["dir"])
         elif source == "opentargets":
             _opentargets(c)

@@ -8,10 +8,11 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s %(name)s %(levelname
 
 @app.command()
 def download(source: Optional[List[str]] = typer.Option(None, "--source", "-s", help="Only these sources"),
-             from_dir: Optional[str] = typer.Option(None, "--from", help="Local dir with pre-downloaded files")):
+             from_dir: Optional[str] = typer.Option(None, "--from", help="Local dir with pre-downloaded files"),
+             release: Optional[str] = typer.Option(None, "--release", help="Release label to record, e.g. 'DepMap Public 26Q3'")):
     """Fetch all raw data sources into data/raw/."""
     from .download.run import run
-    run(source or None, from_dir)
+    run(source or None, from_dir, release)
 
 @app.command()
 def build(step: Optional[List[str]] = typer.Option(None, "--step", help="Only run these build steps")):
@@ -48,7 +49,8 @@ def bundle(out: str = "data/bundles", raw: bool = True):
     for name, dirs in jobs:
         target = outdir / f"cancer-targets-{name}-{tag}.tar"
         print(f"writing {target} ...")
-        subprocess.run(["tar", "-cf", str(target), "-C", str(DATA)] + dirs, check=True)
+        # superseded releases kept locally under raw/_archive are not shipped
+        subprocess.run(["tar", "-cf", str(target), "--exclude", "raw/_archive", "--exclude", "*.part", "-C", str(DATA)] + dirs, check=True)
         print(f"  {target.stat().st_size / 1e9:.2f} GB")
     print("Done. Recipients extract into data/ and run `ct db`.")
 

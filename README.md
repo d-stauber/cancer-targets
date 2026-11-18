@@ -12,8 +12,8 @@ The code is on GitHub; the data (~5 GB) is shared separately via [Dropbox](https
 
 | Bundle | Contents | Size | Needed? |
 |---|---|---|---|
-| `cancer-targets-processed-<date>.tar` | `data/processed/*.parquet` — harmonised expression, annotations, 34 M gene × context scores | ~2.1 GB | **yes**, to run the app |
-| `cancer-targets-raw-<date>.tar` | `data/raw/` — every source file as downloaded (DepMap 24Q4, Xena TOIL, HPA, Open Targets, UniProt, HGNC, surfaceome tables, CCLE proteomics) | ~3.2 GB | only to rebuild / rescore from scratch |
+| `cancer-targets-processed-<date>.tar` | `data/processed/*.parquet` — harmonised expression, annotations, PRISM drug data, 44 M gene × context scores | ~3.5 GB | **yes**, to run the app |
+| `cancer-targets-raw-<date>.tar` | `data/raw/` — every source file as downloaded (DepMap 26Q3, Xena TOIL, HPA v26, Open Targets 26.09, UniProt 2026_04, HGNC, PRISM, surfaceome tables, CCLE proteomics) | ~3.7 GB | only to rebuild / rescore from scratch |
 
 ```bash
 git clone https://github.com/d-stauber/cancer-targets.git && cd cancer-targets
@@ -60,10 +60,10 @@ make score            # gene x context components, composites, ranks; then bench
 ## Data sources (versions recorded in `data/raw/manifest.json`)
 | Source | Used for |
 |---|---|
-| DepMap Public (figshare; latest mirrored release 24Q4) — `Model.csv`, `OmicsExpressionProteinCodingGenesTPMLogp1.csv`, `CRISPRGeneEffect.csv`, common essentials | cell-line expression (log2 TPM+1), lineages/subtypes, 137 non-cancerous lines (e.g. MCF 10A, MCF12A, HMEL) as matched normals, dependency (display only) |
+| DepMap Public 26Q3 — `Model.csv`, `OmicsExpressionTPMLogp1HumanProteinCodingGenes.csv` (default profile per model), `CRISPRGeneEffect.csv`, `CRISPRInferredCommonEssentials.csv`, `OmicsProfiles.csv` | expression for 2,130 lines (log2 TPM+1), lineages/subtypes, non-cancerous lines (e.g. HMEL) as matched normals, CRISPR dependency for 1,361 lines (display only) |
 | UCSC Xena TOIL recompute (`TcgaTargetGtex_rsem_gene_tpm`) | TCGA + TARGET tumors, TCGA adjacent normals and GTEx in one pipeline (tumor-vs-normal comparisons) |
 | GTEx v10 median TPM | vital-tissue-weighted normal reference for cell-line contexts |
-| Human Protein Atlas v25 (`normal_ihc_data`, `subcellular_location`, `rna_tissue_consensus`) | normal tissue protein levels (IHC), localization, bone marrow / lymphoid RNA |
+| Human Protein Atlas v26.0 (`normal_ihc_data`, `subcellular_location`, `rna_tissue_consensus`) | normal tissue protein levels (IHC), localization, bone marrow / lymphoid RNA |
 | Open Targets 26.09 (`target`, `target_tractability`, `target_prioritisation`, `target_safety_event`, `association_overall_direct`, `clinical_target`, `drug_molecule`, `drug_mechanism_of_action`, `disease`) | tractability buckets, known drugs & phases, disease association, safety |
 | UniProt (reviewed human) | topology (TM, signal peptide, extracellular domains, GPI), function text |
 | HGNC | master gene map (19.3k protein-coding genes) |
@@ -71,8 +71,10 @@ make score            # gene x context components, composites, ranks; then bench
 | CCLE proteomics (Nusinow 2020) | tumor protein evidence for cell lines |
 | PRISM Repurposing (Broad; Public 24Q2 extended primary: 6,790 compounds × 919 lines at 2.5 µM; 19Q4 secondary: dose-response AUC/IC50 for 1,448 compounds × 489 lines) | drug sensitivity per cell line and per lineage; compound ↔ target links |
 
-**Newer DepMap releases**: the DepMap portal blocks scripted downloads; drop the files listed in `config/sources.yaml`
-into `data/raw/depmap/` (or run `ct download -s depmap --from <dir>`) and rerun `make build && make score`.
+**Newer DepMap releases**: the portal is behind a Cloudflare check, so download `Model.csv`, `CRISPRGeneEffect.csv`,
+`CRISPRInferredCommonEssentials.csv`, `OmicsProfiles.csv` and the protein-coding expression TPM file from the release page,
+then `ct download -s depmap --from ~/Downloads --release "DepMap Public 26Q4"` (file names are matched by pattern, older files
+should first be moved out of `data/raw/depmap/`), and rerun `make build && make score`.
 
 ## Scoring (see `config/weights.yaml`)
 Components in [0,1]; missing components are dropped and weights renormalised (`evidence` = number present).
