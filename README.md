@@ -69,6 +69,7 @@ make score            # gene x context components, composites, ranks; then bench
 | HGNC | master gene map (19.3k protein-coding genes) |
 | Bausch-Fluck 2018 in silico surfaceome + local dark-surfaceome atlas (from `~/Downloads`) | surface labels, ML score, CD numbers |
 | CCLE proteomics (Nusinow 2020) | tumor protein evidence for cell lines |
+| UCSC Xena TOIL isoform TPM (`TcgaTargetGtex_rsem_isoform_tpm`, RSEM, GENCODE v23) + GENCODE v23 GTF | transcript-level expression in TCGA/TARGET tumors, TCGA adjacent normals and GTEx; exon structures; exon inclusion for genes in `config/isoform_genes.yaml` (CD44 v2–v10, ERBB2 Δ16, FGFR2 IIIb/IIIc, MET ex14, CD19 ex2, FN1 EDA/EDB, TNC, VEGFA, BCL2L1) |
 | PRISM Repurposing (Broad; Public 24Q2 extended primary: 6,790 compounds × 919 lines at 2.5 µM; 19Q4 secondary: dose-response AUC/IC50 for 1,448 compounds × 489 lines) | drug sensitivity per cell line and per lineage; compound ↔ target links |
 
 **Newer DepMap releases**: the portal is behind a Cloudflare check, so download `Model.csv`, `CRISPRGeneEffect.csv`,
@@ -125,6 +126,12 @@ housekeeping / cardiac genes are gated or score < 0.25; the report is written to
 * **Target rankings** – profile toggle, matched-control override, filters, collapsible weight sliders with presets
   (selectivity-first, novelty, ADC/antibody, inhibitor/degrader), context tiles, sortable table with breakdown bars, CSV.
 * **Custom controls** – drag-and-drop upload of an expression profile.
+* **Isoforms** – for any gene: transcript structure (exons in transcription order) and isoform composition per tumor type
+  and normal tissue. For genes in `config/isoform_genes.yaml` (CD44 by default, with variant exons labelled v2–v10): per-sample
+  exon inclusion (share of the gene's TPM from transcripts containing the exon) or absolute TPM, shown as tumor vs TCGA adjacent
+  normal vs GTEx per tissue, with a table of medians, differences and AUROC. Add a gene to the YAML and run
+  `ct build --step isoforms` to get the same view for it. Optional: put DepMap's
+  `OmicsExpressionTranscriptTPMLogp1HumanAllGenes.csv` in `data/raw/isoforms/` to add cell lines.
 * **Drugs** – compound search and drug pages (sensitivity by lineage and per cell line, targets); a "Drug sensitivity (PRISM)"
   panel on every cell-line / lineage rankings page (sort by sensitivity, selectivity vs all lines, or AUC; filter by target);
   and "compounds annotated against this gene" on gene pages. Sensitivity call: log2 FC viability < −1 at 2.5 µM.

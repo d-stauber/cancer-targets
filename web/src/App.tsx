@@ -5,6 +5,7 @@ import Gene from './pages/Gene'
 import ContextPage from './pages/Context'
 import Controls from './pages/Controls'
 import Drug from './pages/Drug'
+import Isoforms from './pages/Isoforms'
 import GeneSearch from './components/GeneSearch'
 import { ThemeContext, useTheme } from './theme'
 import DrugsHome from './pages/Drugs'
@@ -18,6 +19,7 @@ export default function App() {
         <NavLink to="/explorer" className="link">Explorer</NavLink>
         <NavLink to="/context" className="link">Target rankings</NavLink>
         <NavLink to="/drugs" className="link">Drugs</NavLink>
+        <NavLink to="/isoforms" className="link">Isoforms</NavLink>
         <NavLink to="/controls" className="link">Custom controls</NavLink>
         <div className="spacer" />
         <GeneSearch />
@@ -33,6 +35,8 @@ export default function App() {
           <Route path="/controls" element={<Controls />} />
           <Route path="/drug/:id" element={<Drug />} />
           <Route path="/drugs" element={<DrugsHome />} />
+          <Route path="/isoforms" element={<Isoforms />} />
+          <Route path="/isoforms/:symbol" element={<Isoforms />} />
         </Routes>
       </main>
     </ThemeContext.Provider>

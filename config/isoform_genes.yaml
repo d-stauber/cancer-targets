@@ -1,0 +1,31 @@
+# Genes with full per-sample isoform data: per-sample isoform fractions and exon inclusion (PSI-like) in every
+# TCGA / TARGET / GTEx sample (and DepMap cell line if the transcript file is present).
+# Every other gene still gets per-context transcript summaries. Add genes here and rerun `ct build --step isoforms`.
+# exon_labels name the exons of `reference_transcript` in transcription order; exons of other transcripts are
+# labelled by overlap with them, anything else becomes alt1, alt2, ...
+genes:
+  CD44:
+    reference_transcript: ENST00000428726   # CD44-001, isoform 1 = CD44v2-v10 (18 exons)
+    exon_labels: [c1, c2, c3, c4, c5, v2, v3, v4, v5, v6, v7, v8, v9, v10, c6, c7, c8, c9]
+    variable: [v2, v3, v4, v5, v6, v7, v8, v9, v10]
+    default_exon: v6
+    note: >-
+      CD44 variant exons v2-v10 are alternatively spliced between constant exons c5 and c6 (human v1 is not used).
+      CD44s (standard) skips all of them; CD44v8-v10 (CD44E) dominates in epithelia; CD44v6 has been targeted
+      clinically (bivatuzumab mertansine, CD44v6 CAR-T), and v6 is expressed in some normal squamous epithelia.
+  ERBB2:
+    note: HER2 delta16 (exon 16 skipping) forms constitutively active dimers and is linked to trastuzumab resistance.
+  FGFR2:
+    note: Mutually exclusive IIIb / IIIc exons switch ligand specificity (epithelial vs mesenchymal).
+  MET:
+    note: Exon 14 skipping removes the CBL-binding juxtamembrane domain (oncogenic driver in lung cancer).
+  CD19:
+    note: Exon 2 skipping is a mechanism of escape from CD19 CAR-T therapy.
+  FN1:
+    note: Extra domains EDA / EDB (oncofetal fibronectin) are tumor-stroma targets.
+  TNC:
+    note: Large tenascin-C isoforms with FN-III domains A1-D are tumor-associated.
+  VEGFA:
+    note: VEGF-A xxx vs xxxb isoforms differ in angiogenic activity.
+  BCL2L1:
+    note: BCL-xL vs BCL-xS (alternative 5' splice site in exon 2) have opposite apoptotic effects.

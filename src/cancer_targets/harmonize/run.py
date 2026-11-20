@@ -1,7 +1,7 @@
 """`ct build`: run harmonization steps in dependency order."""
 import logging, time
 from ..paths import RAW
-from . import genes, depmap, gtex, hpa, uniprot, surfaceome, opentargets, proteomics, xena, contexts, prism
+from . import genes, depmap, gtex, hpa, uniprot, surfaceome, opentargets, proteomics, xena, contexts, prism, isoforms
 from .util import exists
 
 log = logging.getLogger("ct.build")
@@ -20,6 +20,7 @@ STEPS = [
     ("prism", prism.build_prism),
     ("xena", xena.build_xena),
     ("contexts", contexts.build_contexts_and_summary),
+    ("isoforms", isoforms.build_isoforms),
 ]
 
 def run(steps: list[str] | None = None):

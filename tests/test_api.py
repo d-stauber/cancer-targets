@@ -114,3 +114,25 @@ def test_drug_explorer(client):
     assert client.get(f"/api/explorer/drugs?x={bt}&y={mda}&metric=bogus").status_code == 400
     csv = client.get(f"/api/explorer/drugs/ranking?x={bt}&y={mda}&format=csv")
     assert csv.headers["content-type"].startswith("text/csv") and "LAPATINIB" in csv.text
+
+def _iso_built(client):
+    return client.get("/api/isoforms/genes").status_code == 200 and client.get("/api/genes/CD44/isoforms").status_code == 200
+
+def test_isoform_structure(client):
+    if not _iso_built(client):
+        pytest.skip("isoform data not built")
+    st = client.get("/api/genes/CD44/isoforms").json()
+    labels = [b["label"] for b in st["bins"]]
+    assert all(f"v{i}" in labels for i in range(2, 11)) and st["default_exon"] == "v6"
+    names = {t["transcript_id"]: t["variant_summary"] for t in st["transcripts"]}
+    assert names.get("ENST00000428726") == "v2–v10" and names.get("ENST00000263398") == "no variable exons"
+
+def test_isoform_inclusion(client):
+    if not _iso_built(client) or client.get("/api/genes/CD44/isoforms/inclusion").status_code != 200:
+        pytest.skip("isoform expression not built")
+    r = client.get("/api/genes/CD44/isoforms/inclusion?feature=exon:v6&metric=psi").json()
+    assert r["comparison"] and all(0 <= c["median"] <= 1 for c in r["contexts"] if c["median"] is not None)
+    assert client.get("/api/genes/CD44/isoforms/inclusion?feature=exon:v99").status_code == 400
+    assert client.get("/api/genes/ACTB/isoforms/inclusion").status_code == 404   # not a detail gene
+    comp = client.get("/api/genes/CD44/isoforms/composition?types=gtex_toil").json()
+    assert comp["rows"]

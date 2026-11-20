@@ -81,7 +81,7 @@ export default function Gene() {
             {st.dark_surfaceome && <Badge kind="outline">dark surfaceome atlas</Badge>}
           </div>
         </div>
-        <div className="row"><Link className="btn secondary" to={`/explorer`}>Compare contexts</Link></div>
+        <div className="row"><Link className="btn secondary" to={`/isoforms/${g.symbol}`}>Isoforms</Link><Link className="btn secondary" to={`/explorer`}>Compare contexts</Link></div>
       </div>
       <div className="tiles">
         <Tile label="Best context" value={best ? best.name : '–'} hint={best ? `rank ${best.rank} · ${fmt(best.pct, 1)}th pctl` : ''} />
